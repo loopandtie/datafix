@@ -2,7 +2,9 @@ class Datafixes::FixKittens < Datafix
   def self.up
     table_name = Kitten.table_name
     archive_table(table_name)
-    execute %Q{ UPDATE #{table_name} SET fixed = 't'; }
+    transaction do # Optional use of transaction
+      execute %Q{ UPDATE #{table_name} SET fixed = 't'; }
+    end
   end
 
   def self.down

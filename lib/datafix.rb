@@ -30,6 +30,12 @@ class Datafix
       ActiveRecord::Base.connection.table_exists? table_name
     end
 
+    def transaction
+      ActiveRecord::Base.transaction do
+        yield
+      end
+    end
+
     def archive_table(table_name)
       log "Archive #{table_name} for Rollback" if self.respond_to?(:log)
       execute "CREATE TABLE archived_#{table_name} ( LIKE #{table_name} INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES )"
@@ -58,11 +64,9 @@ class Datafix
   def migrate(direction)
     raise ArgumentError unless DIRECTIONS.include?(direction)
 
-    ActiveRecord::Base.transaction do
-      self.class.public_send(direction.to_sym)
-      log_run(direction)
-      log_status(direction)
-    end
+    self.class.public_send(direction.to_sym)
+    log_run(direction)
+    log_status(direction)
   end
 
   def up?
