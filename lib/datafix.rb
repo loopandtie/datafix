@@ -83,7 +83,7 @@ class Datafix
   def fetch_version
     migrations = ActiveRecord::Migrator.migrations(Rails.root.join("db", "datafixes"))
     migrations.detect do |migration|
-      migration.basename.include? script_name.underscore
+      migration.name == script_name
     end.try(:version)
   end
 
