@@ -21,6 +21,12 @@ describe Datafix do
       context 'when there is a a file with the script name' do
         it { should == 1 }
       end
+
+      context 'when the datafix name contains a number' do
+        let(:datafix) { Datafixes::Fix5Things.new }
+
+        it { should == 3 }
+      end
     end
 
     describe '#script_name' do
