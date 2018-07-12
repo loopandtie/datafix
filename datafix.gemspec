@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Datafix provides a generator for documenting and testing database hotfixes}
   gem.homepage      = "https://github.com/Casecommons/datafix"
 
-  gem.add_dependency "activerecord"
+  gem.add_dependency "activerecord", ">= 5.2.0"
   gem.add_dependency "railties"
   gem.add_dependency "pg"
 
