@@ -46,7 +46,15 @@ namespace :db do
   private
 
   def migrations
-    ActiveRecord::MigrationContext.new(Rails.root.join("db", "datafixes")).migrations
+    migration_context = if ActiveRecord::MigrationContext.instance_method(:initialize).arity <= 1
+                          ActiveRecord::MigrationContext.new(Rails.root.join("db", "datafixes"))
+                        else
+                          ActiveRecord::MigrationContext.new(
+                            Rails.root.join("db", "datafixes"), ActiveRecord::Base.connection.schema_migration
+                          )
+                        end
+    
+    migration_context.migrations
   end
 
   def script_from_name(name)
